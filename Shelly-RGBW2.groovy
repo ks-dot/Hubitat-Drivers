@@ -4,6 +4,7 @@
  *
  *  Copyright © 2018-2019 Scott Grayban
  *  Copyright © 2020 Allterco Robotics US
+ *  Copyright © 2021 Kevin Sadowski
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  *  in compliance with the License. You may obtain a copy of the License at:
@@ -367,6 +368,7 @@ try {
         red = obsStatus.lights.red[0]
         green = obsStatus.lights.green[0]
         blue = obsStatus.lights.blue[0]
+        white = obsStatus.lights.white[0]
         rgbwCode = "${red},${green},${blue},${white}"
         rgbCode = "${red},${green},${blue}"
         
@@ -733,7 +735,8 @@ def setLevel(percent) {
         sendSwitchCommand "/white/0?turn=on&brightness=${percent}"
         if (txtEnable) log.info ("White Mode setLevel ${percent}")
     } else
-        sendSwitchCommand "/color/0?turn=on&gain=${percent}&white=${percent}"
+        w = percent * 255 / 100
+        sendSwitchCommand "/color/0?turn=on&gain=${percent}&white=${w}"
         if (txtEnable) log.info ("Color Mode setLevel ${percent}")
 }
 
@@ -747,7 +750,8 @@ def setLevel(percentage, rate) {
         sendSwitchCommand "/white/0?turn=on&brightness=${percentage}"
         if (txtEnable) log.info ("White Mode setLevel(x,x): rate = ${rate} // percentage = ${percentage}")
     } else
-        sendSwitchCommand "/color/0?turn=on&gain=${percentage}&white=${percent}"
+        w = percentage * 255 / 100
+        sendSwitchCommand "/color/0?turn=on&gain=${percentage}&white=${w}"
         if (txtEnable) log.info ("Color Mode setLevel(x,x): rate = ${rate} // percentage = ${percentage}")
 }
 // End Direct Device Commands
